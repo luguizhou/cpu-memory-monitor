@@ -70,14 +70,14 @@ function dumpMemory (memProfileDir, isLeak = false) {
 }
 
 module.exports = function cpuMemoryMonitor (options = {}) {
-  const cpuOptions = options.cpu || {}
-  const cpuInterval = cpuOptions.interval || 1000
-  const cpuDuration = cpuOptions.duration || 30000
-  const cpuThreshold = cpuOptions.threshold || 90
-  const cpuProfileDir = cpuOptions.profileDir || process.cwd()
-  const cpuCounter = cpuOptions.counter || 1
-  const cpuLimiterOpt = cpuOptions.limiter || []
-  const cpuLimiter = new RateLimiter(cpuLimiterOpt[0] || 3, cpuLimiterOpt[1] || 'hour', true)
+//   const cpuOptions = options.cpu || {}
+//   const cpuInterval = cpuOptions.interval || 1000
+//   const cpuDuration = cpuOptions.duration || 30000
+//   const cpuThreshold = cpuOptions.threshold || 90
+//   const cpuProfileDir = cpuOptions.profileDir || process.cwd()
+//   const cpuCounter = cpuOptions.counter || 1
+//   const cpuLimiterOpt = cpuOptions.limiter || []
+//   const cpuLimiter = new RateLimiter(cpuLimiterOpt[0] || 3, cpuLimiterOpt[1] || 'hour', true)
 
   const memOptions = options.memory || {}
   const memInterval = memOptions.interval || 1000
@@ -88,37 +88,37 @@ module.exports = function cpuMemoryMonitor (options = {}) {
   const memLimiter = new RateLimiter(memLimiterOpt[0] || 3, memLimiterOpt[1] || 'hour', true)
 
   if (options.cpu) {
-    const cpuTimer = setInterval(() => {
-      if (processing.cpu) {
-        return
-      }
-      pusage.stat(process.pid, (err, stat) => {
-        if (err) {
-          console.error(`cpu stat error: ${err.message}`)
-          console.error(err.stack)
-          clearInterval(cpuTimer)
-          return
-        }
-        if (stat.cpu > cpuThreshold) {
-          counter.cpu += 1
-          if (counter.cpu >= cpuCounter) {
-            memLimiter.removeTokens(1, (limiterErr, remaining) => {
-              if (limiterErr) {
-                console.error(`limiterErr: ${limiterErr.message}`)
-                console.error(limiterErr.stack)
-                return
-              }
-              if (remaining > -1) {
-                dumpCpu(cpuProfileDir, cpuDuration)
-                counter.cpu = 0
-              }
-            })
-          }
-        } else {
-          counter.cpu = 0
-        }
-      })
-    }, cpuInterval)
+//     const cpuTimer = setInterval(() => {
+//       if (processing.cpu) {
+//         return
+//       }
+//       pusage.stat(process.pid, (err, stat) => {
+//         if (err) {
+//           console.error(`cpu stat error: ${err.message}`)
+//           console.error(err.stack)
+//           clearInterval(cpuTimer)
+//           return
+//         }
+//         if (stat.cpu > cpuThreshold) {
+//           counter.cpu += 1
+//           if (counter.cpu >= cpuCounter) {
+//             memLimiter.removeTokens(1, (limiterErr, remaining) => {
+//               if (limiterErr) {
+//                 console.error(`limiterErr: ${limiterErr.message}`)
+//                 console.error(limiterErr.stack)
+//                 return
+//               }
+//               if (remaining > -1) {
+//                 dumpCpu(cpuProfileDir, cpuDuration)
+//                 counter.cpu = 0
+//               }
+//             })
+//           }
+//         } else {
+//           counter.cpu = 0
+//         }
+//       })
+//     }, cpuInterval)
   }
 
   if (options.memory) {
@@ -165,9 +165,9 @@ module.exports = function cpuMemoryMonitor (options = {}) {
     }, memInterval)
 
     //包兼容问题已不可用，c++写的包
-    memwatch.on('leak', (info) => {
-      console.warn('memory leak: %j', info)
-      dumpMemory(memProfileDir, true)
-    })
+//     memwatch.on('leak', (info) => {
+//       console.warn('memory leak: %j', info)
+//       dumpMemory(memProfileDir, true)
+//     })
   }
 }
