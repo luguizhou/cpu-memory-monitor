@@ -10,10 +10,10 @@ const pusage = require('pidusage')
 const heapdump = require('heapdump')
 
 //已不可用 todo c++写的
-const profiler = require('v8-profiler')
+//const profiler = require('v8-profiler')
 
 //已不可用 todo c++写的包
-const memwatch = require('memwatch-next')
+//const memwatch = require('memwatch-next')
 
 //控制速率的 在制定时间内，触发次数
 const RateLimiter = require('limiter').RateLimiter
@@ -33,26 +33,26 @@ function genProfilePath (profileDir, prefix, suffix) {
   return path.join(profileDir, `${prefix}-${process.pid}-${Date.now()}.${suffix}`)
 }
 
-function dumpCpu (cpuProfileDir, cpuDuration) {
-  profiler.startProfiling()
-  processing.cpu = true
-  setTimeout(() => {
-    const profile = profiler.stopProfiling()
-    const filepath = genProfilePath(cpuProfileDir, 'cpu', 'cpuprofile')
-    profile.export()
-      .pipe(fs.createWriteStream(filepath))
-      .on('finish', () => {
-        processing.cpu = false
-        profile.delete()
-        console.error(`cpuprofile export success: ${filepath}`)
-      })
-      .on('error', (error) => {
-        processing.cpu = false
-        console.error(`cpuprofile export error: ${error.message}`)
-        console.error(error.stack)
-      })
-  }, cpuDuration)
-}
+// function dumpCpu (cpuProfileDir, cpuDuration) {
+//   profiler.startProfiling()
+//   processing.cpu = true
+//   setTimeout(() => {
+//     const profile = profiler.stopProfiling()
+//     const filepath = genProfilePath(cpuProfileDir, 'cpu', 'cpuprofile')
+//     profile.export()
+//       .pipe(fs.createWriteStream(filepath))
+//       .on('finish', () => {
+//         processing.cpu = false
+//         profile.delete()
+//         console.error(`cpuprofile export success: ${filepath}`)
+//       })
+//       .on('error', (error) => {
+//         processing.cpu = false
+//         console.error(`cpuprofile export error: ${error.message}`)
+//         console.error(error.stack)
+//       })
+//   }, cpuDuration)
+// }
 
 //根据传过来的文件地址生产快照
 function dumpMemory (memProfileDir, isLeak = false) {
