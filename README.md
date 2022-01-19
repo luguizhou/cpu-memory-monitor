@@ -1,7 +1,7 @@
 ## cpu-memory-monitor
 
 CPU & Memory Monitor, auto dump.
-
+目前依赖的两个包兼容有问题 目前只有memory是可用的
 ### Install
 
 ```
